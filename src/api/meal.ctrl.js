@@ -77,4 +77,23 @@ router.get('/', async (req, res) => {
   }
 });
 
+router.get('/hello', (req, res) => {
+  console.log('hahaha');
+
+  const result = {
+    version: '1.0',
+    template: {
+      outputs: [
+          {
+              simpleText: {
+                  text: '예제 텍스트',
+              },
+          },
+      ],
+    },
+  };
+
+  res.status(200).json(result);
+});
+
 module.exports = router;
