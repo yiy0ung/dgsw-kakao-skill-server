@@ -6,7 +6,7 @@ module.exports = async (req, res, next) => {
   if (!token) {
     console.log('permission denied : 권한이 안보내졌습니다');
     const result = {
-      version: '1.0',
+      version: '2.0',
       data: {
         message: 'permission denied',
       },
@@ -22,7 +22,7 @@ module.exports = async (req, res, next) => {
     if (!permission) {
       console.log('permission denied : 존재하지 않는 권한');
       const result = {
-        version: '1.0',
+        version: '2.0',
         data: {
           message: 'permission denied',
         },
@@ -34,7 +34,7 @@ module.exports = async (req, res, next) => {
   } catch (error) {
     console.error(error);
     const result = {
-      version: '1.0',
+      version: '2.0',
       data: {
         message: 'permission denied',
       },
