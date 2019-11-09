@@ -81,7 +81,7 @@ router.post('/hello', (req, res) => {
   console.log('hahaha');
 
   const result = {
-    version: '1.0',
+    version: '2.0',
     template: {
       outputs: [
           {
