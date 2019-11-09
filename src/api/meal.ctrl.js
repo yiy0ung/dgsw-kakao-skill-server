@@ -23,7 +23,7 @@ router.post('/', async (req, res) => {
 
     const todayMeal = await models.Meal.getTodayByKakao(schoolcode);
 
-    const result = kakao.CarouselMeal('오늘의 급식', '', todayMeal);
+    const result = kakao.CarouselMeal(todayMeal);
     res.status(200).json(result);
 
     console.log('오늘 급식 조회 성공');
