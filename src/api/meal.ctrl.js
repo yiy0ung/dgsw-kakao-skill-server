@@ -25,8 +25,10 @@ router.get('/', async (req, res) => {
 
   if (!schoolCode) {
     result = {
-      status: 400,
-      message: 'required school code',
+      version: '1.0',
+      data :{
+        message: 'required school code',
+      },
     };
 
     res.status(400).json(result);
@@ -43,11 +45,19 @@ router.get('/', async (req, res) => {
     let mealInfo = await getMealInfo(type, schoolCode);
 
     const result = {
-      status: 200,
-      message: '급식 조회 성공',
+      version: '1.0',
       data: {
-        meal: mealInfo,
+        message: '급식 조회 성공',
       },
+      template: [
+        {
+          outputs: [
+            {
+              mealInfo
+            }
+          ],
+        }
+      ],
     };
 
     res.status(200).json(result);
@@ -57,8 +67,10 @@ router.get('/', async (req, res) => {
     console.error(error);
 
     const result = {
-      status: 500,
-      message: '조회를 실패했습니다',
+      version: '1.0',
+      data: {
+        message: '조회를 실패했습니다',
+      },
     };
 
     res.status(500).json(result);
