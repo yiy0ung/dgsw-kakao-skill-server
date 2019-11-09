@@ -14,7 +14,7 @@ async function getMealInfo(type, schoolCode) {
   return data;
 }
 
-router.get('/', async (req, res) => {
+router.post('/', async (req, res) => {
   let { type, schoolCode } = req.query; // type: today, week
 
   console.log(`급식 조회 ${type}`);
@@ -77,7 +77,7 @@ router.get('/', async (req, res) => {
   }
 });
 
-router.get('/hello', (req, res) => {
+router.post('/hello', (req, res) => {
   console.log('hahaha');
 
   const result = {
