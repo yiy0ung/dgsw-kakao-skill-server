@@ -4,86 +4,56 @@ const lib = require('../lib/meal.lib');
 const kakao = require('../lib/kakao.lib');
 
 router.post('/', async (req, res) => {
-  console.log('오늘 급식 조회');
-  const { schoolcode } = req.query;
+  console.log('급식 조회');
+  const {
+    type, // today, next
+    schoolcode: schoolCode,
+  } = req.query;
 
-  if (!schoolcode) {
+  if (!type || !schoolCode) {
     const result = kakao.SimpleText('급식 조회를 실패했어요');
 
-    res.status(500).json(result);
+    res.status(400).json(result);
     return;
   }
 
   try {
-    const exist = await models.Meal.existThisMonthMeal(schoolcode);
+    const exist = await models.Meal.existThisMonthMeal(schoolCode);
 
+    // 급식 sync
     if (Array.isArray(exist) && exist.length <= 0) {
-      await lib.syncMealData();
+      await lib.syncMealData(schoolCode);
     }
 
-    const todayMeal = await models.Meal.getTodayByKakao(schoolcode);
+    let mealData; // 급식 정보
 
-    const result = kakao.CarouselMeal(todayMeal);
+    if (type === 'today') {
+      mealData = await models.Meal.getTodayByKakao(schoolCode);
+    } else if (type === 'next') {
+      mealData = await models.Meal.getNextByKakao(schoolCode);
+    } else {
+      const result = kakao.SimpleText('급식 조회를 실패했어요');
+
+      res.status(400).json(result);
+      return;
+    }
+
+    let result; // response
+
+    if (mealData.length <= 0) {
+      result = kakao.SimpleText('급식이 없어용..ㅜㅜ');
+    } else {
+      result = kakao.CarouselMeal(mealData);
+    }
+
     res.status(200).json(result);
-
-    console.log('오늘 급식 조회 성공');
+    console.log('급식 조회 성공');
   } catch (error) {
-    console.error(`오늘 급식 조회 실패 : ${error}`);
+    console.error(`급식 조회 실패 : ${error}`);
     const result = kakao.SimpleText('급식 조회를 실패했어요\n잠시후에 시도 해주세요.. ㅜㅜ');
 
     res.status(500).json(result);
   }
-});
-
-router.post('/week', async (req, res) => {
-  console.log('일주일 급식 조회');
-  const { schoolcode } = req.query;
-
-  if (!schoolcode) {
-    const result = kakao.SimpleText('급식 조회를 실패했어요');
-
-    res.status(500).json(result);
-    return;
-  }
-
-  try {
-    const exist = await models.Meal.existThisMonthMeal(schoolcode);
-
-    if (Array.isArray(exist) && exist.length <= 0) {
-      await lib.syncMealData();
-    }
-
-    const todayMeal = await models.Meal.getTodayByKakao(schoolcode);
-
-    const result = kakao.ListCard('일주일 급식', '', todayMeal);
-    res.status(200).json(result);
-
-    console.log('일주일 급식 조회 성공');
-  } catch (error) {
-    console.error(`일주일 급식 조회 실패 : ${error}`);
-    const result = kakao.SimpleText('일주일 급식 조회를 실패했어요\n잠시후에 시도 해주세요.. ㅜㅜ');
-
-    res.status(500).json(result); 
-  }
-});
-
-router.post('/hello', (req, res) => {
-  console.log('hahaha');
-
-  const result = {
-    version: '2.0',
-    template: {
-      outputs: [
-        {
-          simpleText: {
-              text: '예제 텍스트입니다',
-          },
-        },
-      ],
-    },
-  };
-
-  res.status(200).json(result);
 });
 
 module.exports = router;

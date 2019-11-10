@@ -51,39 +51,15 @@ module.exports = (sequelize, DataTypes) => {
     raw: true,
   });
 
-  // Meal.getTodayMeal = (schoolCode) => Meal.findAll({
-  //   attributes: [
-  //     'idx',
-  //     'schoolName',
-  //     'schoolCode',
-  //     'menu',
-  //     'mealTime',
-  //     [sequelize.fn('date_format', sequelize.col('meal_date'), '%Y년 %m월 %d일'), 'mealDate'],
-  //   ],
-  //   where: {
-  //     schoolCode,
-  //     mealDate: moment().startOf('day').format('YYYY-MM-DD').toString(),
-  //   },
-  //   raw: true,
-  // });
-
-  Meal.getWeekMeal = (schoolCode) => Meal.findAll({
-    attributes: [
-      'idx',
-      'schoolName',
-      'schoolCode',
-      'menu',
-      'mealTime',
-      [sequelize.fn('date_format', sequelize.col('meal_date'), '%Y년 %m월 %d일'), 'mealDate'],
-    ],
-    where: {
+  Meal.getNextByKakao = (schoolCode) => sequelize.query(`
+    SELECT meal_time AS title, menu AS description
+    FROM meal
+    WHERE school_code = :schoolCode AND meal_date = :today;
+  `, {
+    type: sequelize.QueryTypes.SELECT,
+    replacements: {
       schoolCode,
-      mealDate: {
-        between: [
-          moment().format('YYYY-MM-DD').toString(),
-          moment().add(7, 'day').format('YYYY-MM-DD').toString(),
-        ],
-      }
+      today: moment().add(1, 'day').startOf('day').format('YYYY-MM-DD').toString(),
     },
     raw: true,
   });

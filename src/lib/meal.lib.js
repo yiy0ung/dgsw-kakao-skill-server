@@ -1,18 +1,14 @@
 const models = require('../models');
 const moment = require('moment');
-const repository = require('./repository');
+const repository = require('../request/repository');
 
-exports.syncMealData = async () => {
+exports.syncMealData = async (schoolCode) => {
   console.log('Sync School Meal Data');
   const monthFromYMD = moment().startOf('month').format('YYYYMMDD');
   const monthToYMD = moment().endOf('month').format('YYYYMMDD');
 
-  // const nextMonthFromYMD = moment().add(1, 'month').startOf('month').format('YYYYMMDD');
-  // const nextMonthToYMD = moment().add(1, 'month').endOf('month').format('YYYYMMDD');
-
   try {
-    // 대구소프트웨어 고등학교
-    const { data: thisMonthMeal } = await repository.neisMealData(monthFromYMD, monthToYMD);
+    const { data: thisMonthMeal } = await repository.neisMealData(schoolCode, monthFromYMD, monthToYMD);
 
     let meals = thisMonthMeal.mealServiceDietInfo[1].row;
 
