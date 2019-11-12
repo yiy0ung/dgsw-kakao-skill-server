@@ -1,4 +1,5 @@
 const router = require('express').Router();
+const moment = require('moment-timezone');
 const models = require('../models');
 const lib = require('../lib/meal.lib');
 const kakao = require('../lib/kakao.lib');
@@ -65,7 +66,12 @@ router.post('/custom', async (req, res) => {
   let searchDate;
 
   try {
+    console.log(body.params);
     searchDate = body.action.params.searchDate.value;
+
+    if (!searchDate) { // default : 오늘 날짜
+      throw new Error('SearchDate is not defined');
+    }
   } catch (error) {
     const result = kakao.SimpleText('잘못된 요청입니다\n다시 시도해주세요');
 
