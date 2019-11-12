@@ -1,11 +1,12 @@
 const models = require('../models');
 const moment = require('moment');
+const momentTime = require('moment-timezone');
 const repository = require('../request/repository');
 
 exports.syncMealData = async (schoolCode) => {
   console.log('Sync School Meal Data');
-  const monthFromYMD = moment().startOf('month').format('YYYYMMDD');
-  const monthToYMD = moment().endOf('month').format('YYYYMMDD');
+  const monthFromYMD = momentTime.tz('Asia/Seoul').startOf('month').format('YYYYMMDD');
+  const monthToYMD = momentTime.tz('Asia/Seoul').endOf('month').format('YYYYMMDD');
 
   try {
     const { data: thisMonthMeal } = await repository.neisMealData(schoolCode, monthFromYMD, monthToYMD);

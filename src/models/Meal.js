@@ -1,4 +1,4 @@
-const moment = require('moment');
+const moment = require('moment-timezone');
 
 module.exports = (sequelize, DataTypes) => {
   const Meal = sequelize.define('Meal', {
@@ -46,7 +46,8 @@ module.exports = (sequelize, DataTypes) => {
     type: sequelize.QueryTypes.SELECT,
     replacements: {
       schoolCode,
-      today: moment().startOf('day').format('YYYY-MM-DD').toString(),
+      // today: moment().startOf('day').format('YYYY-MM-DD').toString(),
+      today: moment.tz('Asia/Seoul').startOf('day').format('YYYY-MM-DD').toString(),
     },
     raw: true,
   });
@@ -59,7 +60,7 @@ module.exports = (sequelize, DataTypes) => {
     type: sequelize.QueryTypes.SELECT,
     replacements: {
       schoolCode,
-      today: moment().add(1, 'day').startOf('day').format('YYYY-MM-DD').toString(),
+      today: moment.tz('Asia/Seoul').add(1, 'day').startOf('day').format('YYYY-MM-DD').toString(),
     },
     raw: true,
   });
@@ -77,8 +78,8 @@ module.exports = (sequelize, DataTypes) => {
       schoolCode,
       mealDate: {
         between: [
-          moment().startOf('month').format('YYYY-MM-DD').toString(),
-          moment().endOf('month').format('YYYY-MM-DD').toString(),
+          moment.tz('Asia/Seoul').startOf('month').format('YYYY-MM-DD').toString(),
+          moment.tz('Asia/Seoul').endOf('month').format('YYYY-MM-DD').toString(),
         ],
       },
     },

@@ -607,6 +607,13 @@ expand-brackets@^2.1.4:
     snapdragon "^0.8.1"
     to-regex "^3.0.1"
 
+express-static@^1.2.6:
+  version "1.2.6"
+  resolved "https://registry.yarnpkg.com/express-static/-/express-static-1.2.6.tgz#567aab6ba808386936b8c17bb0a90f6f61d0db4f"
+  integrity sha512-pmp8fSe+bCxGCTk5+X6HzIF2APYMvrAq3Y7sT/WOELc0JZZxJhMTVgCbxcoUgMRBSqnQ9EfTw/Uv3J1ONoIAuA==
+  dependencies:
+    mime2 latest
+
 express@^4.17.1:
   version "4.17.1"
   resolved "https://registry.yarnpkg.com/express/-/express-4.17.1.tgz#4491fc38605cf51f8629d39c2b5d026f98a4c134"
@@ -1296,6 +1303,11 @@ mime-types@~2.1.24:
   dependencies:
     mime-db "1.40.0"
 
+mime2@latest:
+  version "0.0.9"
+  resolved "https://registry.yarnpkg.com/mime2/-/mime2-0.0.9.tgz#507e3b3b370deb947c3b47a4ff544c33b7e1a4eb"
+  integrity sha512-19HM8Rpaqy7kEtupNI+XXUgh+dkPWQUpExLHVWntk6QySTUn0VKpn3kEe41K7DJh+wCYN1t93oak63jURqRW0A==
+
 mime@1.6.0:
   version "1.6.0"
   resolved "https://registry.yarnpkg.com/mime/-/mime-1.6.0.tgz#32cd9e5c64553bd58d19a568af452acff04981b1"
@@ -1348,7 +1360,7 @@ mkdirp@^0.5.0, mkdirp@^0.5.1:
   dependencies:
     minimist "0.0.8"
 
-moment-timezone@^0.5.21:
+moment-timezone@^0.5.21, moment-timezone@^0.5.27:
   version "0.5.27"
   resolved "https://registry.yarnpkg.com/moment-timezone/-/moment-timezone-0.5.27.tgz#73adec8139b6fe30452e78f210f27b1f346b8877"
   integrity sha512-EIKQs7h5sAsjhPCqN6ggx6cEbs94GK050254TIJySD1bzoM5JTYDwAU1IoVOeTOL6Gm27kYJ51/uuvq1kIlrbw==

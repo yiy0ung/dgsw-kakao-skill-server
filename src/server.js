@@ -4,6 +4,7 @@ const HTTP = require('http');
 const express = require('express');
 const cors = require('cors');
 const override = require('method-override');
+const serve = require('express-static');
 const morgan = require('morgan');
 const api = require('./api');
 
@@ -16,6 +17,7 @@ app.use(express.json());
 app.use(morgan(`${env === 'production' ? 'combined' : 'dev'}`));
 app.use(cors());
 app.use(override());
+app.use('/static', serve('./public'));
 
 app.use('/api', api);
 
