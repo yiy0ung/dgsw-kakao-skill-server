@@ -17,9 +17,9 @@ router.post('/', async (req, res) => {
       todayWeather = await models.Weather.getTodayWeather();
     }
 
-    // 내용
-    const description =`온도 : ${todayWeather.temp}°C\n체감온도 : ${todayWeather.windChill}°C\n습도 : ${todayWeather.humidity}%\n\n${weatherScript.subtitle}\n\n최신업데이트: ${moment.tz(todayWeather.createDate, 'Asia/Seoul').format('M월 D일 / h:m A')}`
     const weatherScript = weather.weatherCases[todayWeather.condition];
+    // 내용
+    const description = `온도 : ${todayWeather.temp}°C\n체감온도 : ${todayWeather.windChill}°C\n습도 : ${todayWeather.humidity}%\n\n${weatherScript.subtitle}\n\n최신업데이트: ${moment.tz(todayWeather.createDate, 'Asia/Seoul').format('M월 D일 / h:m A')}`
     
     const result = kakao.BasicCard(
       weatherScript.title,
