@@ -66,7 +66,7 @@ router.post('/custom', async (req, res) => {
   let searchDate;
 
   try {
-    console.log(body.params);
+    console.log(body.action.params);
     searchDate = body.action.params.searchDate.value;
 
     if (!searchDate) { // default : 오늘 날짜
