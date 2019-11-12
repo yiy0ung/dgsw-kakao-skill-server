@@ -56,13 +56,42 @@ router.post('/', async (req, res) => {
   }
 });
 
-router.post('/custom', (req, res) => {
+router.post('/custom', async (req, res) => {
   const {
     schoolcode: schoolCode,
   } = req.query;
   const { body } = req;
 
-  console.log(body);
+  let searchDate;
+
+  try {
+    searchDate = body.action.params.searchDate.value;
+  } catch (error) {
+    const result = kakao.SimpleText('잘못된 요청입니다\n다시 시도해주세요');
+
+    res.status(400).json(result);
+    return;
+  }
+
+  try {
+    const mealData = await models.Meal.searchMealByKakao(schoolCode, searchDate);
+
+    let result; // response
+
+    if (mealData.length <= 0) {
+      result = kakao.SimpleText('급식이 없어용..ㅜㅜ');
+    } else {
+      result = kakao.CarouselMeal(mealData);
+    }
+
+    res.status(200).json(result);
+    console.log('급식 조회 성공');
+  } catch (error) {
+    console.error(`급식 조회 실패 : ${error}`);
+    const result = kakao.SimpleText('급식 조회를 실패했어요\n잠시후에 시도 해주세요.. ㅜㅜ');
+
+    res.status(500).json(result);
+  }
 });
 
 module.exports = router;

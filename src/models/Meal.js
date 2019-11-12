@@ -52,6 +52,19 @@ module.exports = (sequelize, DataTypes) => {
     raw: true,
   });
 
+  Meal.searchMealByKakao = (schoolCode, searchDate) => sequelize.query(`
+    SELECT meal_time AS title, menu AS description
+    FROM meal
+    WHERE school_code = :schoolCode AND meal_date = :searchDate;
+  `, {
+    type: sequelize.QueryTypes.SELECT,
+    replacements: {
+      schoolCode,
+      searchDate,
+    },
+    raw: true,
+  });
+
   Meal.getNextByKakao = (schoolCode) => sequelize.query(`
     SELECT meal_time AS title, menu AS description
     FROM meal
