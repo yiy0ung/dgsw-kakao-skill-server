@@ -9,14 +9,12 @@ router.post('/', async (req, res) => {
 
   try {
     let todayWeather = await models.Weather.getTodayWeather();
+    const isLastWeather = moment.tz(todayWeather.createDate, 'Asia/Seoul').toString() <= moment.tz('Asia/Seoul').subtract(1, 'hour').toString();
 
-    if (todayWeather.length <= 0 || 
-      moment.tz(todayWeather.create_date, 'Asia/Seoul').toString() <= moment.tz('Asia/Seoul').subtract(1, 'hour').toString())  {
+    if (!todayWeather || isLastWeather)  {
       // 날씨 불러오기
       await weather.syncWeather(schoolCode);
       todayWeather = await models.Weather.getTodayWeather();
-    } else {
-      todayWeather = todayWeather[0];
     }
 
     const weatherScript = weather.weatherCases[todayWeather.condition];

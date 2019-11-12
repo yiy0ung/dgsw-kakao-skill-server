@@ -5,7 +5,7 @@ const repository = require('../request/repository');
 const location = require('../../config/location.json');
 const env = require('../../config/env.json');
 
-const ip = process.env.NODE_ENV ? env.remoteIp : env.localIp;
+const ip = process.env.NODE_ENV === 'production' ? env.remoteIp : env.localIp;
 const port = process.env.PORT;
 
 exports.weatherCases = {
@@ -62,7 +62,7 @@ exports.syncWeather = async (schoolCode) => {
     }
 
     const { data } = await repository.weatherData(schoolLocation.latitude, schoolLocation.longitude);
-    console.log(data);
+
     const temp = (data.main.temp-273.15).toFixed(1);
     const wind = data.wind.speed;
     const windChill = 13.12 + (0.6215*(temp)) - (11.37*Math.pow(wind, 0.16)) + (0.3965*Math.pow(wind, 0.16)*(temp))

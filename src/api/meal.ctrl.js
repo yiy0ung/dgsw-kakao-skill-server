@@ -56,4 +56,13 @@ router.post('/', async (req, res) => {
   }
 });
 
+router.post('/custom', (req, res) => {
+  const {
+    schoolcode: schoolCode,
+  } = req.query;
+  const { body } = req;
+
+  console.log(body);
+});
+
 module.exports = router;

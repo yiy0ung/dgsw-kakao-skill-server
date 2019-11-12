@@ -45,7 +45,7 @@ module.exports = (sequelize, DataTypes) => {
     ],
     limit: 1,
     raw: true,
-  });
+  }).then(result => result[0]);
 
   return Weather;
 };
