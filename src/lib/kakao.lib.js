@@ -86,6 +86,28 @@ exports.CarouselMeal = (items) => {
           },
         },
       ],
+      quickReplies: [
+        {
+          label: '급식 도움말',
+          messageText: '급식 도움말',
+          action: 'message',
+        },
+        {
+          label: '오늘 급식',
+          messageText: '오늘 급식 보여줘',
+          action: 'message',
+        },
+        {
+          label: '내일 급식',
+          messageText: '내일 급식 보여줘',
+          action: 'message',
+        },
+        {
+          label: '요일 급식',
+          messageText: '요일 급식 보여줘',
+          action: 'message',
+        },
+      ]
     },
   };
 
