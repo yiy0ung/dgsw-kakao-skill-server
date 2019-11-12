@@ -67,9 +67,10 @@ router.post('/custom', async (req, res) => {
 
   try {
     console.log(body.action.params);
-    searchDate = body.action.params.searchDate.value;
+    const params = JSON.parse(body.action.params.searchDate);
+    searchDate = params.value;
 
-    if (!searchDate) { // default : 오늘 날짜
+    if (!searchDate) {
       throw new Error('SearchDate is not defined');
     }
   } catch (error) {
