@@ -9,7 +9,7 @@ router.post('/', async (req, res) => {
 
   try {
     let todayWeather = await models.Weather.getTodayWeather();
-    const isLastWeather = moment.tz(todayWeather.createDate, 'Asia/Seoul').toString() <= moment.tz('Asia/Seoul').subtract(1, 'hour').toString();
+    const isLastWeather = moment.tz(todayWeather.createDate, 'Asia/Seoul').toString() <= moment.tz('Asia/Seoul').subtract(30, 'minute').toString();
 
     if (!todayWeather || isLastWeather)  {
       // 날씨 불러오기
@@ -17,10 +17,9 @@ router.post('/', async (req, res) => {
       todayWeather = await models.Weather.getTodayWeather();
     }
 
-    const weatherScript = weather.weatherCases[todayWeather.condition];
+    const weatherScript = weather.weatherCases(todayWeather.condition);
     // 내용
-    const description = `온도 : ${todayWeather.temp}°C\n체감온도 : ${todayWeather.windChill}°C\n습도 : ${todayWeather.humidity}%\n\n${weatherScript.subtitle}\n\n최신업데이트: ${moment.tz(todayWeather.createDate, 'Asia/Seoul').format('M월 D일 / h:m A')}`
-    
+    const description = `온도 : ${todayWeather.temp}°C\n체감온도 : ${todayWeather.windChill}°C\n습도 : ${todayWeather.humidity}%\n\n${weatherScript.subtitle}\n\n최신업데이트: ${moment.tz(todayWeather.createDate, 'Asia/Seoul').format('M월 D일 / h:m A')}`;
     const result = kakao.BasicCard(
       weatherScript.title,
       description,
