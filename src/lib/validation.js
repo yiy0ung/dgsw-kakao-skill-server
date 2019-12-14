@@ -7,7 +7,7 @@ exports.validationCheckDateFormat = async (body) => {
   }).required();
 
   try {
-    return await Joi.validate(schema, body);
+    return await schema.validate(body);
   } catch (error) {
     throw error;
   }

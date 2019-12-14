@@ -1,18 +1,52 @@
 const moment = require('moment-timezone');
 const models = require('../../models');
-const lib = require('../../lib/meal.lib');
+const Validate = require('../../lib/validation');
+const MealLib = require('../../lib/meal.lib');
 const KakaoLib = require('../../lib/kakao.lib');
-
 
 /**
  * @method GET
  */
 exports.getMeals = async (req, res) => {
   console.log('일반 급식 조회');
-  const { date } = req.query; // YYYY-MM-DD
 
   try {
-    
+    await Validate.validationCheckDateFormat(req.query);
+  } catch (error) {
+    console.log(`요청 형식 오류 - 급식 조회 실패 : ${error}`);
+    const result = {
+      status: 400,
+      message: '급식 조회 실패',
+    };
+
+    res.status(400).json(result);
+    return;
+  }
+
+  try {
+    const {
+      schoolcode: schoolCode,
+      date: searchDate,
+    } = req.query;
+    let mealData = await models.Meal.searchMeal(schoolCode, searchDate);
+
+    // 급식 sync
+    if (mealData.length <= 0) {
+      const { saved } = await MealLib.syncMealData(schoolCode, searchDate);
+
+      if (saved === true) {
+        mealData = await models.Meal.searchMeal(schoolCode, searchDate);
+      }
+    }
+
+    const result = {
+      status: 200,
+      message: '급식 조회 성공',
+      data: mealData,
+    };
+
+    res.status(200).json(result);
+    console.log('급식 조회 성공');
   } catch (error) {
     console.error(`서버에러 - 급식 조회 실패 : ${error}`);
     const result = {
@@ -64,7 +98,7 @@ exports.getChatMealInfo = async (req, res) => {
 
     // 급식 sync
     if (mealData.length <= 0) {
-      const { saved } = await lib.syncMealData(schoolCode, searchDate);
+      const { saved } = await MealLib.syncMealData(schoolCode, searchDate);
 
       if (saved === false) {
         syncMeal = saved;
