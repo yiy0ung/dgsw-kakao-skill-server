@@ -3,15 +3,32 @@ const models = require('../../models');
 const lib = require('../../lib/meal.lib');
 const KakaoLib = require('../../lib/kakao.lib');
 
-exports.getMeals = async (req, res) => {
 
+/**
+ * @method GET
+ */
+exports.getMeals = async (req, res) => {
+  console.log('일반 급식 조회');
+  const { date } = req.query; // YYYY-MM-DD
+
+  try {
+    
+  } catch (error) {
+    console.error(`서버에러 - 급식 조회 실패 : ${error}`);
+    const result = {
+      status: 500,
+      message: '급식 조회 실패',
+    };
+
+    res.status(500).json(result);
+  }
 };
 
 /**
- * @method post
+ * @method POST
  */
 exports.getChatMealInfo = async (req, res) => {
-  console.log("object");
+  console.log("카카오 챗 급식 조회");
   const { body } = req;
   const {
     schoolcode: schoolCode,
@@ -42,20 +59,25 @@ exports.getChatMealInfo = async (req, res) => {
     }
 
     let reply; // response
+    let syncMeal = true; // sync 여부 확인
     let mealData = await models.Meal.searchMealByKakao(schoolCode, searchDate);
 
     // 급식 sync
-    if (Array.isArray(mealData) && mealData.length <= 0) {
+    if (mealData.length <= 0) {
       const { saved } = await lib.syncMealData(schoolCode, searchDate);
 
-      if (saved === true) {
-        mealData = await models.Meal.searchMealByKakao(schoolCode, searchDate);
-        reply = KakaoLib.CarouselMeal(mealData);
-      } else {
-        reply = KakaoLib.SimpleText('급식이 없어용..ㅜㅜ');
+      if (saved === false) {
+        syncMeal = saved;
       }
-    } else {
+
+      mealData = await models.Meal.searchMealByKakao(schoolCode, searchDate);
+    }
+
+    // 카카오 format 설정
+    if (syncMeal === true) { 
       reply = KakaoLib.CarouselMeal(mealData);
+    } else {
+      reply = KakaoLib.SimpleText('급식이 없어용..ㅜㅜ');
     }
 
     res.status(200).json(reply);

@@ -38,22 +38,11 @@ module.exports = (sequelize, DataTypes) => {
     timestamps: false,
   });
 
-  Meal.getTodayByKakao = (schoolCode) => sequelize.query(`
-    SELECT meal_time AS title, menu AS description
-    FROM meal
-    WHERE school_code = :schoolCode AND meal_date = :today;
-  `, {
-    type: sequelize.QueryTypes.SELECT,
-    replacements: {
-      schoolCode,
-      // today: moment().startOf('day').format('YYYY-MM-DD').toString(),
-      today: moment.tz('Asia/Seoul').startOf('day').format('YYYY-MM-DD').toString(),
-    },
-    raw: true,
-  });
+  const attributes = 'school_name AS schoolName, school_code AS schoolode, menu, meal_time AS mealTime, meal_date AS mealDate';
+  const attributesByKakao = 'meal_time AS title, menu AS description';
 
-  Meal.searchMealByKakao = (schoolCode, searchDate) => sequelize.query(`
-    SELECT meal_time AS title, menu AS description
+  Meal.searchMeal = (schoolCode, searchDate) => sequelize.query(`
+    SELECT ${attributes}
     FROM meal
     WHERE school_code = :schoolCode AND meal_date = :searchDate;
   `, {
@@ -65,36 +54,15 @@ module.exports = (sequelize, DataTypes) => {
     raw: true,
   });
 
-  Meal.getNextByKakao = (schoolCode) => sequelize.query(`
-    SELECT meal_time AS title, menu AS description
+  Meal.searchMealByKakao = (schoolCode, searchDate) => sequelize.query(`
+    SELECT ${attributesByKakao}
     FROM meal
-    WHERE school_code = :schoolCode AND meal_date = :today;
+    WHERE school_code = :schoolCode AND meal_date = :searchDate;
   `, {
     type: sequelize.QueryTypes.SELECT,
     replacements: {
       schoolCode,
-      today: moment.tz('Asia/Seoul').add(1, 'day').startOf('day').format('YYYY-MM-DD').toString(),
-    },
-    raw: true,
-  });
-
-  Meal.existMonthMeal = (schoolCode, searchDate) => Meal.findAll({
-    attributes: [
-      'idx',
-      'schoolName',
-      'schoolCode',
-      'menu',
-      'mealTime',
-      [sequelize.fn('date_format', sequelize.col('meal_date'), '%Y년 %m월 %d일'), 'mealDate'],
-    ],
-    where: {
-      schoolCode,
-      mealDate: {
-        between: [
-          moment(searchDate).tz('Asia/Seoul').startOf('month').format('YYYY-MM-DD').toString(),
-          moment(searchDate).tz('Asia/Seoul').endOf('month').format('YYYY-MM-DD').toString(),
-        ],
-      },
+      searchDate,
     },
     raw: true,
   });
