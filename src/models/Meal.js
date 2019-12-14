@@ -78,7 +78,7 @@ module.exports = (sequelize, DataTypes) => {
     raw: true,
   });
 
-  Meal.existThisMonthMeal = (schoolCode) => Meal.findAll({
+  Meal.existMonthMeal = (schoolCode, searchDate) => Meal.findAll({
     attributes: [
       'idx',
       'schoolName',
@@ -91,8 +91,8 @@ module.exports = (sequelize, DataTypes) => {
       schoolCode,
       mealDate: {
         between: [
-          moment.tz('Asia/Seoul').startOf('month').format('YYYY-MM-DD').toString(),
-          moment.tz('Asia/Seoul').endOf('month').format('YYYY-MM-DD').toString(),
+          moment(searchDate).tz('Asia/Seoul').startOf('month').format('YYYY-MM-DD').toString(),
+          moment(searchDate).tz('Asia/Seoul').endOf('month').format('YYYY-MM-DD').toString(),
         ],
       },
     },

@@ -1,7 +1,7 @@
 require('dotenv').config();
 
 const models = require('../models');
-const repository = require('../request/repository');
+const repository = require('../request/apiRepository');
 const location = require('../../config/location.json');
 const env = require('../../config/env.json');
 

@@ -1,3 +1,20 @@
+
+/**
+ * @param body request body
+ * @param paramName 찾으려고 하는 카카오 플러그인 매개변수
+ */
+exports.searchBodyParameter = (body, paramName) => {
+  console.log(body.action.params);
+  const { value } = JSON.parse(body.action.params[paramName]);
+
+  if (!value) {
+    throw new Error(`Cannot find parameter name : ${paramName}`);
+  }
+
+  return value;
+};
+
+
 /**
  * @param text 메세지 내용
  */
