@@ -92,13 +92,24 @@ exports.getChatMealInfo = async (req, res) => {
       return;
     }
 
+    // 학교 검사
+    const schoolInfo = await MealLib.getSchoolInfo(schoolCode);
+    
+    if (schoolInfo.saved === false) {
+      console.log('잘못된 학교 코드');
+      const result = KakaoLib.SimpleText('잘못된 요청입니다\n다시 시도해주세요');
+  
+      res.status(400).json(result);
+      return;
+    }
+
     let reply; // response
     let syncMeal = true; // sync 여부 확인
     let mealData = await models.Meal.searchMealByKakao(schoolCode, searchDate);
 
     // 급식 sync
     if (mealData.length <= 0) {
-      const { saved } = await MealLib.syncMealData(schoolCode, searchDate);
+      const { saved } = await MealLib.syncMealData(schoolInfo.data.educationCode, schoolCode, searchDate);
 
       if (saved === false) {
         syncMeal = saved;
@@ -114,8 +125,8 @@ exports.getChatMealInfo = async (req, res) => {
       reply = KakaoLib.SimpleText('급식이 없어용..ㅜㅜ');
     }
 
-    res.status(200).json(reply);
     console.log('급식 조회 성공');
+    res.status(200).json(reply);
   } catch (error) {
     console.error(`급식 조회 실패 : ${error}`);
     const result = KakaoLib.SimpleText('잘못된 요청입니다\n다시 시도해주세요');

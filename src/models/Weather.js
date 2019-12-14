@@ -6,6 +6,11 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true,
       autoIncrement: true,
     },
+    schoolCode: {
+      field: 'school_code',
+      type: DataTypes.STRING(30),
+      allowNull: false,
+    },
     condition: {
       field: 'condition',
       type: DataTypes.STRING(50),
@@ -39,10 +44,13 @@ module.exports = (sequelize, DataTypes) => {
 
   Weather.createWeather = data => Weather.create(data);
   
-  Weather.getTodayWeather = () => Weather.findAll({
+  Weather.getTodayWeather = (schoolCode) => Weather.findAll({
     order: [
       ['create_date', 'DESC'],
     ],
+    where: {
+      schoolCode,
+    },
     limit: 1,
     raw: true,
   }).then(result => result[0]);

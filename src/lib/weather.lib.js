@@ -105,6 +105,7 @@ exports.syncWeather = async (schoolCode) => {
     const windChill = 13.12 + (0.6215*(temp)) - (11.37*Math.pow(wind, 0.16)) + (0.3965*Math.pow(wind, 0.16)*(temp))
 
     const weatherFormat = {
+      schoolCode,
       condition: data.weather[0].main,
       temp,
       windChill: windChill.toFixed(1),

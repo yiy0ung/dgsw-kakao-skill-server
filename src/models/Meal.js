@@ -8,6 +8,11 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true,
       autoIncrement: true,
     },
+    educationCode: {
+      field: 'education_code',
+      type: DataTypes.STRING(30),
+      allowNull: false,
+    },
     schoolName: {
       field: 'school_name',
       type: DataTypes.STRING(30),

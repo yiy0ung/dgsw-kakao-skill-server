@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const meal = require('./meal');
-const weather = require('./weather.ctrl');
+const weather = require('./weather');
 
 const permitMiddleware = require('../middleware/permission');
 
