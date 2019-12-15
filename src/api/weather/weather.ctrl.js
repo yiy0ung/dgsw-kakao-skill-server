@@ -37,10 +37,10 @@ exports.getChatWeather = async (req, res) => {
 
     const weatherScript = WeatherLib.weatherCases(todayWeather.condition);
     // 내용
-    const description = `온도 : ${todayWeather.temp}°C\n\n`
+    const description = `온도 : ${todayWeather.temp}°C\n`
       + `습도 : ${todayWeather.humidity}%\n\n${weatherScript.subtitle}\n\n`;
-      + `최신업데이트: ${moment.tz(todayWeather.createDate, 'Asia/Seoul').format('M월 D일 / h:m A')}\n\n`
-      + '(30분간격으로 초기화 가능합니다)';
+      + `최신업데이트: ${moment.tz(todayWeather.createDate, 'Asia/Seoul').format('M월 D일 / h:m A')}\n`
+      + '(30분간격으로 업데이트 가능 합니다)';
     
     const result = KakaoLib.BasicCard(
       weatherScript.title,

@@ -11,7 +11,9 @@ exports.getMeals = async (req, res) => {
   console.log('일반 급식 조회');
 
   try {
-    await Validate.validationCheckDateFormat(req.query);
+    await Validate.validationCheckDateFormat({
+      date: req.query.date,
+    });
   } catch (error) {
     console.log(`요청 형식 오류 - 급식 조회 실패 : ${error}`);
     const result = {
@@ -28,6 +30,18 @@ exports.getMeals = async (req, res) => {
       schoolcode: schoolCode,
       date: searchDate,
     } = req.query;
+
+    // 학교 검사
+    const schoolInfo = await MealLib.getSchoolInfo(schoolCode);
+    
+    if (schoolInfo.saved === false) {
+      console.log('잘못된 학교 코드');
+      const result = KakaoLib.SimpleText('잘못된 요청입니다\n다시 시도해주세요');
+  
+      res.status(400).json(result);
+      return;
+    }
+
     let mealData = await models.Meal.searchMeal(schoolCode, searchDate);
 
     // 급식 sync
