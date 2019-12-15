@@ -60,7 +60,7 @@ exports.syncMealData = async (educationCode, schoolCode, searchDate) => {
       };
     } else {
       let meals = mealData.mealServiceDietInfo[1].row;
-      console.log(meals)
+
       if (Array.isArray(meals) === true) {
         meals = meals.map(meal => ({
           educationCode: meal.ATPT_OFCDC_SC_CODE,

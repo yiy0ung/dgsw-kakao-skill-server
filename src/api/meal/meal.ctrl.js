@@ -76,6 +76,7 @@ exports.getChatMealInfo = async (req, res) => {
       searchDate = moment.tz('Asia/Seoul').format('YYYY-MM-DD').toString();
     } else if (dateType === 'tomorrow') {
       searchDate = moment.tz('Asia/Seoul').add('day', 1).format('YYYY-MM-DD').toString();
+      console.log(searchDate);
     } else if (dateType === 'custom') {
       try {
         searchDate = KakaoLib.searchBodyParameter(body, 'searchDate');
@@ -106,20 +107,20 @@ exports.getChatMealInfo = async (req, res) => {
     let reply; // response
     let syncMeal = true; // sync 여부 확인
     let mealData = await models.Meal.searchMealByKakao(schoolCode, searchDate);
-
+    console.log(mealData);
     // 급식 sync
     if (mealData.length <= 0) {
       const { saved } = await MealLib.syncMealData(schoolInfo.data.educationCode, schoolCode, searchDate);
 
       if (saved === false) {
         syncMeal = saved;
+      } else {
+        mealData = await models.Meal.searchMealByKakao(schoolCode, searchDate);
       }
-
-      mealData = await models.Meal.searchMealByKakao(schoolCode, searchDate);
     }
 
     // 카카오 format 설정
-    if (syncMeal === true) { 
+    if (syncMeal === true && mealData.length <= 0) { 
       reply = KakaoLib.CarouselMeal(mealData);
     } else {
       reply = KakaoLib.SimpleText('급식이 없어용..ㅜㅜ');
