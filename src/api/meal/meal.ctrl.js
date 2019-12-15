@@ -107,7 +107,7 @@ exports.getChatMealInfo = async (req, res) => {
     let reply; // response
     let syncMeal = true; // sync 여부 확인
     let mealData = await models.Meal.searchMealByKakao(schoolCode, searchDate);
-    console.log(mealData);
+
     // 급식 sync
     if (mealData.length <= 0) {
       const { saved } = await MealLib.syncMealData(schoolInfo.data.educationCode, schoolCode, searchDate);
@@ -118,7 +118,7 @@ exports.getChatMealInfo = async (req, res) => {
         mealData = await models.Meal.searchMealByKakao(schoolCode, searchDate);
       }
     }
-    console.log(syncMeal, mealData.length)
+
     // 카카오 format 설정
     if (syncMeal === true && mealData.length > 0) { 
       reply = KakaoLib.CarouselMeal(mealData);

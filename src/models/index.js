@@ -10,7 +10,7 @@ const sequelize = new Sequelize(
   config.password, {
     host: config.host,
     dialect: config.dialect,
-    logging: false,
+    logging: (str) => console.log(str),
     pool: {
       max: 5,
       min: 0,

@@ -35,7 +35,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     mealDate: {
       field: 'meal_date',
-      type: DataTypes.DATE,
+      type: DataTypes.DATEONLY,
       allowNull: false,
     },
   }, {
@@ -49,7 +49,7 @@ module.exports = (sequelize, DataTypes) => {
   Meal.searchMeal = (schoolCode, searchDate) => sequelize.query(`
     SELECT ${attributes}
     FROM meal
-    WHERE school_code = :schoolCode AND meal_date = :searchDate;
+    WHERE school_code = :schoolCode AND :searchDate = date_format(meal_date, "%Y-%c-%d");
   `, {
     type: sequelize.QueryTypes.SELECT,
     replacements: {
@@ -62,7 +62,7 @@ module.exports = (sequelize, DataTypes) => {
   Meal.searchMealByKakao = (schoolCode, searchDate) => sequelize.query(`
     SELECT ${attributesByKakao}
     FROM meal
-    WHERE school_code = :schoolCode AND meal_date = :searchDate;
+    WHERE school_code = :schoolCode AND :searchDate = date_format(meal_date, "%Y-%c-%d");
   `, {
     type: sequelize.QueryTypes.SELECT,
     replacements: {
