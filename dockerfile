@@ -15,10 +15,13 @@ RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/so
 RUN sudo apt-get update && sudo apt-get -y install yarn
 
 COPY package.json package.json
+
+VOLUME /deploy/kakao-skill-server
+
 RUN yarn
 
 COPY . .
 
-RUN echo "yarn start" > "kakaoChatbot.sh"
-RUN chmod 777 kakaoChatbot.sh
-CMD ./kakaoChatbot.sh
+RUN echo "yarn prod" > "kakaoSkillServer.sh"
+RUN chmod 777 kakaoSkillServer.sh
+CMD ./kakaoSkillServer.sh
