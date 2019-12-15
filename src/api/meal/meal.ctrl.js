@@ -118,9 +118,9 @@ exports.getChatMealInfo = async (req, res) => {
         mealData = await models.Meal.searchMealByKakao(schoolCode, searchDate);
       }
     }
-
+    console.log(syncMeal, mealData.length)
     // 카카오 format 설정
-    if (syncMeal === true && mealData.length <= 0) { 
+    if (syncMeal === true && mealData.length > 0) { 
       reply = KakaoLib.CarouselMeal(mealData);
     } else {
       reply = KakaoLib.SimpleText('급식이 없어용..ㅜㅜ');
