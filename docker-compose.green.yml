@@ -1,0 +1,12 @@
+version: '3'
+
+services: 
+  kakao-skill-server:
+    image: kakao-skill-server
+    volumes: 
+      - /home/ubuntu/deploy/kakao-skill-server:/deploy/kakao-skill-server
+    ports:
+      - "8002:8000"
+    environment: 
+      - PORT=8000
+      
