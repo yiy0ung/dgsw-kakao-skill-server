@@ -19,4 +19,6 @@ RUN yarn
 
 COPY . .
 
-CMD ["yarn", "prod"]
+RUN echo "yarn prod" > "kakaoSkillServer.sh"
+RUN chmod 777 kakaoSkillServer.sh
+CMD ./kakaoSkillServer.sh
