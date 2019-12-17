@@ -22,6 +22,6 @@ app.use('/static', serve('./public'));
 app.use('/api', api);
 
 server.listen(port, () => {
-  console.log('Version : 1.2.0');
+  console.log('Version : 1.3.0');
   console.log(`Kakao chatbot server is started on port ${port}`);
 });
