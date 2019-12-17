@@ -2,7 +2,7 @@ FROM node:8
 
 MAINTAINER wlsdud2194 <wlsdud2194@gmail.com>
 
-WORKDIR /usr/src/kakaoSkillServer/
+WORKDIR /usr/src/kakaoChatbot
 
 RUN apt-get update
 RUN apt-get install sudo
@@ -16,12 +16,12 @@ RUN sudo apt-get update && sudo apt-get -y install yarn
 
 COPY package.json package.json
 
+# VOLUME home/ubuntu/deploy/kakao-skill-server
+
 RUN yarn
 
 COPY . .
 
-CMD [ "yarn prod" ]
-
-# RUN echo "yarn prod" > "kakaoServer.sh"
-# RUN chmod 777 kakaoServer.sh
-# CMD ./kakaoServer.sh
+RUN echo "yarn prod" > "kakaoSkillServer.sh"
+RUN chmod 777 kakaoSkillServer.sh
+CMD ./kakaoSkillServer.sh
