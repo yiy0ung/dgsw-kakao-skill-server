@@ -2,7 +2,7 @@ FROM node:8
 
 MAINTAINER wlsdud2194 <wlsdud2194@gmail.com>
 
-WORKDIR /usr/src/kakaoChatbot
+WORKDIR /usr/src/kakaoSkillServer
 
 RUN apt-get update
 RUN apt-get install sudo
@@ -15,8 +15,6 @@ RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/so
 RUN sudo apt-get update && sudo apt-get -y install yarn
 
 COPY package.json package.json
-
-VOLUME /deploy/kakao-skill-server
 
 RUN yarn
 
