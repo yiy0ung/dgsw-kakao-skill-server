@@ -2,7 +2,7 @@ FROM node:8
 
 MAINTAINER wlsdud2194 <wlsdud2194@gmail.com>
 
-WORKDIR /usr/src/kakaoSkillServer
+WORKDIR /usr/src/kakaoSkillServer/
 
 RUN apt-get update
 RUN apt-get install sudo
