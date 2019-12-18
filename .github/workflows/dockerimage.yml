@@ -12,3 +12,7 @@ jobs:
     - uses: actions/checkout@v1
     - name: Build the Docker image
       run: docker build . --file dockerfile --tag kakao-skill-server
+
+    - name: Deploy Service
+      run: ./deploy.sh
+
