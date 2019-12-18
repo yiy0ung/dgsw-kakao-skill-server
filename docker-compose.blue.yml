@@ -3,6 +3,8 @@ version: '3'
 services: 
   kakao-skill-server:
     image: "kakao-skill-server"
+    volumes:
+      - /home/ubuntu/DGSW_KAKAO_CHATBOT_SERVER/config:/usr/src/kakaoChatbot/config
     ports:
       - "8001:8000"
     environment: 
