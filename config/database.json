@@ -1,0 +1,8 @@
+{
+  "database": "kakao_open",
+  "username": "xxxxxx",
+  "password": "xxxxxx",
+  "host": "xxxxxxxxxxx",
+  "dialect": "mysql",
+  "port": "3306"
+}
